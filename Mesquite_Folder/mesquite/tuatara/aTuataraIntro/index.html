@@ -1,0 +1,376 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Tuatara package for Mesquite</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body bgcolor = "#FFF8DE">
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="1%"><img src="images/webpageBanner.gif"></td>
+    <td width="97%" bgcolor="#999966"><font face="Georgia, Times New Roman, Times, serif" size="+2"><strong><font color="#FFFFCC">Tuatara</font></strong><font color="#FFFFCC">: 
+      Conservation priority in a phylogenetic context</font></font> <font color="#FFFFCC"><br>
+      <font face="Georgia, Times New Roman, Times, serif" size="+1">Wayne P. Maddison 
+      &amp; </font><font color="#FFFFCC"><font face="Georgia, Times New Roman, Times, serif" size="+1">Arne 
+      &Oslash;. Mooers</font></font></font></td>
+    <td width="1%"><img src="images/webpageBannerEnd.gif" width="18" height="74"></td>
+  </tr>
+</table>
+ 
+<p><font color="#333300" face="Georgia, Times New Roman, Times, serif">Version 1.01 (<font color="#663333">August</font> 2009)</font></p>
+<font face="Georgia, Times New Roman, Times, serif" color="#333300"><p><font color="#663333"><strong>Tuatara</strong> is a package of Mesquite modules 
+  designed for analyzing conservation priorities in a phylogenetic context. The 
+  approach stems from the observation made by R.I. Vane-Wright and colleagues 
+  at the Natural History Museum in London (1991), and refined by R.M. May of Oxford 
+  (1990) that evolutionary distinctiveness would be a useful metric for helping 
+  rank species for conservation. The emblematic species for such an approach is 
+  the New Zealand tuatara, a lineage that roots deep (over 200 million years ago, Hugall et al., 2007) 
+  and whose sister clade comprises all snakes and lizards. With the increase in 
+large, complete, dated phylogenies, the approach can be made operational.</font></p>
+</font>
+<p><font color="#663333" face="Georgia, Times New Roman, Times, serif">This version of Tuatara is 1.01. It has the same calculations as version 1.0; the only change in version 1.01 concerns Mesquite's update notification system.  
+  Tuatara requires Mesquite version 2. It is incompatible with 
+  Mesquite version 1.12 and earlier.</font></p>
+<font color="#663333" face="Georgia, Times New Roman, Times, serif">Tuatara's website is <a href="http://mesquiteproject.org/packages/tuatara/">http://mesquiteproject.org/packages/tuatara</a>.</font><font face="Georgia, Times New Roman, Times, serif" color="#333300">
+<p><font color="#663333">This page explains how to use Tuatara. Contents:</font></p>
+</font><ol>
+  <li><font color="#333300" face="Georgia, Times New Roman, Times, serif"><a href="#installing">Installing Tuatara</a></font></li>
+  <li><font color="#333300" face="Georgia, Times New Roman, Times, serif"><a href="#settingup">Setting up</a></font></li>
+  <li><font color="#333300" face="Georgia, Times New Roman, Times, serif"><a href="#measures">Measures of conservation priority</a></font></li>
+  <li><font color="#333300" face="Georgia, Times New Roman, Times, serif"><a href="#measureUse">Use of conservation measures</a></font></li>
+  <li><font color="#333300" face="Georgia, Times New Roman, Times, serif"><a href="#other">Other Calculations/Features</a></font></li>
+  <li><font color="#333300" face="Georgia, Times New Roman, Times, serif"><a href="#troubleshooting">Troubleshooting</a></font></li>
+  <li><font color="#333300" face="Georgia, Times New Roman, Times, serif"><a href="#citation">Citation</a></font></li>
+  <li><a href="#acknowledgments">Acknowledgments</a></li>
+  <li><font color="#333300" face="Georgia, Times New Roman, Times, serif"><a href="#references">References</a></font></li>
+</ol>
+ 
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr> 
+    <td width="1%"><img src="images/webpageBannerStartSmall.gif" width="18" height="45"></td>
+    <td width="97%" bgcolor="#999966">
+      <h3>&nbsp;<a name="installing"></a><font color="#FFFFCC">1. Installing Tuatara</font></h3>
+      </td>
+    <td width="2%"><img src="images/webpageBannerEndSmall.gif" width="18" height="45"></td>
+  </tr>
+</table>
+
+<p><font face="Georgia, Times New Roman, Times, serif" color="#663333">As of version 2.7 of Mesquite, you can install Tuatara by selecting Check Now for Notices/Installs in the File menu, and entering the following URL:</font></p>
+
+<blockquote>
+  <pre>http://mesquiteproject.org/packages/Tuatara/install.xml</pre>
+</blockquote>
+
+  <p><font color="#663333" face="Georgia, Times New Roman, Times, serif">You can also install Tuatara by hand. Download it  here: <a href="http://mesquiteproject.org/packages/tuatara/tuatara.zip">http://mesquiteproject.org/packages/tuatara/tuatara.zip</a>.  When you unzip it, 
+  you will find it makes a directory  &quot;<strong>tuatara</strong>&quot;. 
+  Please move &quot;<strong>tuatara</strong>&quot; inside the <strong>mesquite</strong> folder within your <strong>Mesquite_Folder</strong>. Thus, when you have moved 
+  it, you should have &quot;tuatara&quot;, within &quot;mesquite&quot;, within 
+  &quot;Mesquite_Folder&quot;. The next time you start Mesquite, it should load 
+  Tuatara (a Tuatara banner will appear in the startup window).</font></p>
+  <p><font color="#663333" face="Georgia, Times New Roman, Times, serif">Source code for Tuatara may be found at http://svn.mesquiteproject.org:8080/repository/Tuatara/</font></p>
+<font face="Georgia, Times New Roman, Times, serif" color="#663333"><p>Tuatara also comes with example files. You can find them 
+  in the examples folder <a href="examples">here</a>. We recommend you try them.</p>
+</font> 
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr> 
+    <td width="1%"><img src="images/webpageBannerStartSmall.gif" width="18" height="45"></td>
+    <td width="97%" bgcolor="#999966">
+	<h3>&nbsp;<a name="settingup"></a><font color="#FFFFCC">2. Setting up your data file</font></h3></td>
+    <td width="2%"><img src="images/webpageBannerEndSmall.gif" width="18" height="45"></td>
+  </tr>
+</table>
+<font face="Georgia, Times New Roman, Times, serif" color="#663333"> 
+<p><font color="#663333">For Tuatara to calculate conservation priority measures 
+  that consider phylogeny, you need to set up a data file with the species and 
+  their phylogenetic tree. You can do this in the usual Mesquite way, for instance 
+  importing a NEXUS or Phylip file, or starting from scratch by creating a new 
+  block of taxa and naming them. Before attempting any of the calculations of 
+  measures, open a Tree Window and arrange for the desired tree to be shown.</font></p>
+<p>The <strong>phylogenetic tree</strong> should be shown in the Tree Window, and have branch 
+  lengths associated. You can see the branch lengths labeled by going to the Drawing 
+  menu of the Tree Window, to the Branch Lengths Labels submenu. You can also 
+  see the branch lengths visually by asking that the tree be drawn with Branches 
+  Proportional to Lengths (also in the Drawing menu). For some of the calculations, 
+  polytomous trees are not permitted.</p>
+<p>Many of the calculations also require an indication of the
+  <strong>extinction risk</strong> of each species, that is, its <strong>probability of extinction</strong>. To indicate these, 
+  create a Continuous data matrix (Characters menu, New Empty Matrix), and enter a character whose values are between 
+  0.0 (species certain to survive) and 1.0 (species certain to go extinct). Then, 
+  when asked by the calculation to choose a source of characters, choose Stored 
+  Characters and this matrix.</p>
+</font> 
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr> 
+    <td width="1%"><img src="images/webpageBannerStartSmall.gif" width="18" height="45"></td>
+    <td width="97%" bgcolor="#999966"> <h3>&nbsp;<a name="measures"></a><font color="#FFFFCC">3. 
+        Measures of conservation priority</font></h3></td>
+    <td width="2%"><img src="images/webpageBannerEndSmall.gif" width="18" height="45"></td>
+  </tr>
+</table>
+ 
+<p><font color="#663333" face="Georgia, Times New Roman, Times, serif">Phylogenetic measures of conservation priority generally assess what evolutionary 
+  history is represented (possibly uniquely) by a species, and thus which might 
+  be lost if the species goes extinct. This is done by counting the length of 
+  phylogenetic branches belonging to the species. The terminal branch of the species 
+  belongs uniquely to it, but some measures also include some proportion of the 
+  lengths of branches of ancestors shared with other species. The &quot;credit&quot; 
+  for the length of an ancestral branch can be divided equally among all extant 
+  descendant species (species-weighted sharing), or equally among the descendant 
+  clades of the branch (clade-weighted sharing). We can think of the total branch length credited to the species as either &quot;the evolutionary history represented by the species&quot; or &quot;the distinctiveness of the species&quot;.</font></p>
+<p><font color="#663333" face="Georgia, Times New Roman, Times, serif">There are two other considerations that have been proposed in phylogenetic 
+  measures of conservation priority. First, one can consider using the estimated 
+  extinction probabilities of species to estimate what might be the expected distinctiveness of the species in the future, after some extinction occurs (Steel et al. 2007; 
+  Faith 2007). Second, one can multiply the distinctiveness of the species (the 
+  history it represents) by its probability of extinction, so as to produce a 
+  species &#8220;value&#8221; that includes the urgency with which we must act 
+  to save it (Redding and Mooers, 2006; Isaac et al., 2007).</font></p>
+
+<p><font color="#663333" face="Georgia, Times New Roman, Times, serif">Tuatara permits you to mix and match these possibilities to generate several 
+  alternative measures of conservation priority. Tuatara has three alternative 
+  measures of a species&#8217; distinctiveness (history represented): (i) unique, (ii) including 
+  ancestral branches weighted by related species or (iii) including ancestral 
+  branches weighted by related clades. Each of these in turn can be measured either (i) 
+  directly or (ii) as expected after some extinction, and each  can be 
+  multiplied by current extinction risk (for urgency). For instance, EDGE (Isaac 
+  et al. 2007) measures species value by terminal branch length plus species-weighted 
+  shares of ancestral branches, which it then multiplies by extinction risk. HEDGE 
+  (Steel et al. 2007) measures species value by terminal branch length, as expected 
+  after some extinction, and weighted by extinction risk. If you choose to weight by extinction risk, then abbreviated name of the measure indicates this by including &quot;GE&quot;.</font></p>
+<font face="Georgia, Times New Roman, Times, serif" color="#663333">
+<p>The full suite of available measures of conservation priority is as follows:</p>
+</font> 
+<ul>
+  <li><font face="Georgia, Times New Roman, Times, serif" color="#663333"><strong>Terminal 
+    Branch Length</strong> &#8212; This measures the length of the terminal branch 
+    belonging to the species (the pendant edge length). Optionally, this can be 
+    weighted by extinction risk.</font></li>
+  <li><font face="Georgia, Times New Roman, Times, serif" color="#663333"><strong>Expected 
+    Terminal Branch Length</strong> [HED and HEDGE)] &#8212; This considers extinction 
+    probabilities of all species to find the expected terminal branch length of 
+    the focal species. This measure was proposed by Steel et al. 2007 in two forms: 
+    HED, which is not weighted by current extinction risk, and HEDGE, which is 
+    weighted by current extinction risk. </font></li>
+  <li><font face="Georgia, Times New Roman, Times, serif" color="#663333"><strong>Evolutionary 
+    Distinctiveness, species</strong> [ED and EDGE] &#8212; This measures the 
+    length of the species' terminal branch plus its species-weighted shares of 
+    ancestral branches. It was proposed by Isaac et al. 2007 as Evolutionary Distinctiveness (ED), and, when weighted by a particular set of current extinction risks (and then log-transformed), as EDGE. Our implementation differs slightly from theirs in allowing any set of current extinction risks to be used, and in not log-transforming the values.</font></li>
+  <li><font face="Georgia, Times New Roman, Times, serif" color="#663333"><strong>Expected 
+    Evolutionary Distinctiveness, species</strong> &#8212; This considers extinction 
+    probabilities to find the expected ED or EDGE after some extinction. This 
+    &quot;expected&quot; version of ED is novel to Tuatara. The new algorithm 
+    first traverses the tree from tips to root to calculate for each clade the 
+    probability distribution of clade sizes following extinction, using the extinction 
+    probabilities given and considering at each step in the traversal all possible 
+    clade sizes for the left and right descendant clades of a node. Then, it traverses 
+    from root to tips, carrying with it an array of conditional credits for branch 
+    lengths and apportioning among left and right descendants, weighting by probabilities 
+    of various possible clade sizes. The array stores credits at each node conditional 
+    on the number of species that survive. For more details, see the source code. 
+    [This measure cannot be calculated on trees with polytomies.]</font></li>
+  <li><font face="Georgia, Times New Roman, Times, serif" color="#663333"><strong>Evolutionary 
+    Distinctiveness, clades</strong> &#8212; This measures the length of the species' 
+    terminal branch plus its clade-weighted shares of ancestral branches. It was 
+    proposed by Redding &amp; Mooers 2006 as the &#8220;equal splits&#8221; distinctiveness 
+    measure, and is abbreviated EDc in Tuatara. It can optionally be weighted 
+    by current extinction risk (the &#8220;expected loss&#8221; measure of Redding 
+    &amp; Mooers, 2006), and is then abbreviated EDcGE.</font></li>
+  <li><font face="Georgia, Times New Roman, Times, serif" color="#663333"><strong>Expected 
+    Evolutionary Distinctiveness, clades</strong> &#8212; This considers extinction 
+    probabilities to find the expected EDc or EDcGE after some extinction. This 
+    &quot;expected&quot; version is novel to Tuatara. The new algorithm first 
+    calculates each clade's probability of complete extinction as the product 
+    of probabilities of the individual species contained. Then it traverses the 
+    tree from root to tips, carrying with it credits for branch lengths and apportioning 
+    them among descendant nodes. At each node the probabilities of alternative 
+    scenarios of daughter clade extinctions are calculated (and there can be many 
+    scenarios if the node is polytomous), and under each scenario the credit is 
+    apportioned accordingly (and weighted by the probability of that scenario). 
+    For more details, see the source code. [This measure cannot be calculated 
+    on trees with polytomies larger than a certain size. Currently, polytomies 
+    with more than 26 descendants are prohibited.]</font></li>
+  <li><font face="Georgia, Times New Roman, Times, serif" color="#663333"><strong>Vane-Wright 
+    et al.'s Distinctness</strong>&#8212; This measures the number of branches 
+    a species is from the root, ignoring their lengths, scaled inversely by the 
+    maximum value (distinctness of species = (max branches from root)/(branches 
+    from root for species)). This is the original distinctiveness measure from 
+    Vane-Wright et al., 1991. </font></li>
+  <li><font face="Georgia, Times New Roman, Times, serif" color="#663333"><strong>May's 
+    Distinctness</strong>&#8212; This measures the sum of the number of descendants 
+    of nodes on path from root to a species, scaled inversely by the maximum value 
+    (distinctness of species = (max #descendants on path from root)/(#descendants 
+    on path from root for species)). This is the distinctiveness measure suggested 
+    by May 1990 as a modification of that of Vane-Wright et al., 1991.</font></li>
+</ul>
+<p><font color="#663333" face="Georgia, Times New Roman, Times, serif">In Mesquite these measures, 
+  if they permit polytomies, assume that the polytomies are &quot;hard&quot;, 
+  that is, represent multiple instantaneous speciation and not uncertainty.</font>   </p>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr> 
+    <td width="1%"><img src="images/webpageBannerStartSmall.gif" width="18" height="45"></td>
+    <td width="97%" bgcolor="#999966"> <h3><font color="#FAE9AF">&nbsp;&nbsp;<a name="measureUse" id="measureUse"></a><font color="#FFFFCC">4. 
+        Use of Conservation Measures</font></font></h3></td>
+    <td width="2%"><img src="images/webpageBannerEndSmall.gif" width="18" height="45"></td>
+  </tr>
+</table>
+<p><font face="Georgia, Times New Roman, Times, serif" color="#663333"><br>
+  The examples files show the use of conservation priority measures in Mesquite. 
+  You can access these calculations:</font></p>
+<h4><font color="#663333" face="Georgia, Times New Roman, Times, serif">In the 
+  List of Taxa Window</font></h4>
+<p><font color="#663333" face="Georgia, Times New Roman, Times, serif">Go to the 
+  List of Taxa Window's Column menu, and choose Number for Taxon&gt;Conservation 
+  Priority. You will be asked to choose a measure and its settings. You can later 
+  change the settings by clicking on a the column heading; a drop down menu will 
+  appear. </font></p>
+<p align="center"><font color="#663333" face="Georgia, Times New Roman, Times, serif"><img src="images/list.jpg" width="487" height="351"> 
+  </font></p>
+<h4><font color="#663333" face="Georgia, Times New Roman, Times, serif">In the 
+  Charts</font></h4>
+<p><font color="#663333" face="Georgia, Times New Roman, Times, serif">You can 
+  make either a Bar &amp; Line chart for taxa, or a Scattergram for taxa, in order 
+  to display the priority measures. Indicate that the value to calculate for the 
+  taxa is Conservation Priority. You will be asked to choose a measure and its 
+  settings. Here shown is a scattergram to show the relationship between two conservation 
+  priority measures, HEDGE and EDGE. This was done by selecting &quot;Different&quot; 
+  to the scattergram's question about the same or different axes.</font></p>
+<p align="center"><font color="#663333" face="Georgia, Times New Roman, Times, serif"><img src="images/chart.jpg" width="426" height="311"> 
+  </font></p>
+<h4><font color="#663333" face="Georgia, Times New Roman, Times, serif">In the 
+  Tree Window</font></h4>
+<p><font color="#663333" face="Georgia, Times New Roman, Times, serif">To display 
+  conservation priorities on the tree, we will treat them as characters that we 
+  map on the tree. Choose Analysis&gt;Trace Character History. For Source of characters 
+  to reconstruct, select Show Secondary Choices, and choose Calculated Value for 
+  Taxon. For Value to Calculate for Taxa, choose Conservation Priority and then 
+  continue to specify the conservation priority measure.</font></p>
+<p align="center"><font color="#663333" face="Georgia, Times New Roman, Times, serif"><img src="images/tree.jpg" width="430" height="478"> 
+  </font></p>
+<h4 align="left"><font color="#663333" face="Georgia, Times New Roman, Times, serif">Selected 
+  Taxa as Secure or Extinct</font></h4>
+<font color="#663333" face="Georgia, Times New Roman, Times, serif">By 
+  default the conservation priority measures assume that any taxa selected have 
+  zero probability of extinction (i.e., are secure) regardless of what is indicated 
+  in the character matrix recording extinction probabilities. This convention 
+  is followed to allow you to select species as if to imagine protecting them, 
+  to see how their protection affects priorities among the other species. You 
+  can change the treatment of selected species by using the Selected Species submenu, 
+  which may appear in various places (List of Taxa, in the column heading; Chart, 
+  in the Chart menu; Tree Window with character traced, in the Trace menu). There 
+  are there choices:</font>
+<ul>
+  <li><font color="#663333" face="Georgia, Times New Roman, Times, serif">Selected 
+    Species are Secure &#8212; Treats selected taxa as if their probabilities 
+    of extinction were 0.0</font></li>
+  <li><font color="#663333" face="Georgia, Times New Roman, Times, serif">Selected 
+    Species are Extinct &#8212; Treats selected taxa as if their probabilities 
+    of extinction were 1.0</font></li>
+  <li><font color="#663333" face="Georgia, Times New Roman, Times, serif">Ignore 
+    Species Selection &#8212; Selection of taxa is ignored in calculations. Thus, 
+    when probability of extinction is needed in calculations, the probability 
+    in the continuous character is used.</font> </li>
+</ul>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr> 
+    <td width="1%"><img src="images/webpageBannerStartSmall.gif" width="18" height="45"></td>
+    <td width="97%" bgcolor="#999966"> <h3><font color="#FAE9AF">&nbsp;&nbsp;<a name="other"></a><font color="#FFFFCC">5. 
+        Other Calculations/Features</font></font></h3></td>
+    <td width="2%"><img src="images/webpageBannerEndSmall.gif" width="18" height="45"></td>
+  </tr>
+</table>
+<font face="Georgia, Times New Roman, Times, serif" color="#663333"> 
+<p><strong>Rarefy Tree by Extinction Probabilities</strong>: This feature deletes 
+  species from the tree according to each species extinction probabilities (which 
+  are stored in a continuous data matrix; see <a href="#settingup">setting up</a>). 
+  Thus, if a species has extinction probability of 0.2, there is a 0.2 probability 
+  it will be deleted from the tree. This feature therefore simulates a particular 
+  scenario of survival of species. If you ask Mesquite to generate many such trees, 
+  you can calculate how various phylogenetic statistics (whether conservation 
+  oriented or not) will vary according to variation in what species survive. You 
+  can access this by selecting &quot;Randomly Modify Current Tree&quot; in the 
+  various places this occurs. For instance, you can make a chart of trees, using 
+  Randomly Modify Current Tree as your source of trees. Or, you could generate 
+  a block of such trees (Make New Tree Block from... in the Taxa &amp; Trees menu).</p>
+<p><strong>Total Phylogenetic Diversity</strong>: This calculates the amount of history (or diversity) 
+  represented by the tree, in the manner expected for conservation calculations. 
+  It is simply the total path length (sum of branch lengths) of the tree, where 
+  unassigned branches are treated as of zero length, and the root's length <strong>is</strong> 
+  counted. This can be accessed wherever calculations are done that assign numbers 
+  to trees (e.g., in a chart for trees, or in the List of Trees window, or in 
+  the tree legend of the Tree Window). If some taxa are selected, then it gives the total path length of only the smallest subtree including all of the selected taxa, down to and including the root. (If no taxa are selected, then it uses the whole tree.)</p>
+</font> 
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr> 
+    <td width="1%"><img src="images/webpageBannerStartSmall.gif" width="18" height="45"></td>
+    <td width="97%" bgcolor="#999966"> <h3><font color="#FAE9AF">&nbsp;&nbsp;<a name="troubleshooting" id="troubleshooting"></a><font color="#FFFFCC">6. 
+    Troubleshooting</font></font></h3></td>
+    <td width="2%"><img src="images/webpageBannerEndSmall.gif" width="18" height="45"></td>
+  </tr>
+</table>
+ 
+<p><font color="#333300" face="Georgia, Times New Roman, Times, serif"><strong>Problem</strong>: W</font><font color="#663333" face="Georgia, Times New Roman, Times, serif">hen you ask to calculate one of the measures of conservation priory, Mesquite asks you for a source of characters but only lists Simulated Characters or Simulated Characters on trees. You are not interested in simulated characters; you simply want to use estimated extinction probabilities in the calculation. </font></p>
+<p><font color="#663333" face="Georgia, Times New Roman, Times, serif"><strong>Solution</strong>: When you ask to weight by extinction risk, or if you use one of the measures calculating expected values, then Tuatara needs to know the extinction risks for the species. Mesquite is suggesting Simulated Characters because there is no other available source of information on extinction probabilities. As noted above under <a href="#settingup">setting up</a>, you need to enter these extinction probabilities as a continuous matrix before you request the calculations. Then, when you ask for the measures to be calculated, Mesquite will offer a choice of a source of characters &mdash; choose Stored Characters. </font><br>
+  <br>
+</p>
+<p><font face="Georgia, Times New Roman, Times, serif" color="#333300"><strong>Problem</strong>: When you ask to calculate one of the measures of conservation priority, Mesquite says that &quot;No source of a current tree could be found&quot;.</font></p>
+<p><font color="#333300" face="Georgia, Times New Roman, Times, serif"><strong>Solution</strong>: As noted above </font><font color="#663333" face="Georgia, Times New Roman, Times, serif">under <a href="#settingup">setting up</a>, you need to have a tree window open and showing the tree with which you want to calculate the conservation priority measures.</font><br>
+  <br>
+</p>
+<p><font face="Georgia, Times New Roman, Times, serif" color="#333300"><strong>Problem</strong>: You can't figure out how to make a chart showing conservation priorities.</font></p>
+<p><font color="#333300" face="Georgia, Times New Roman, Times, serif"><strong>Solution</strong>: Conservation priorities are values that pertain to species (in Mesquite's context, these would be &quot;taxa&quot;). Thus, you want a chart for taxa</font><font color="#663333" face="Georgia, Times New Roman, Times, serif">, and thus choose from the Analysis menu either a Bar &amp; Line Chart for Taxa, or a Scattergram for Taxa.</font></p>
+<p></p>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="1%"><img src="images/webpageBannerStartSmall.gif" alt="start" width="18" height="45"></td>
+    <td width="97%" bgcolor="#999966"><h3><font color="#FAE9AF">&nbsp;&nbsp;<a name="citation"></a><font color="#FFFFCC">7. 
+      Citation</font></font></h3></td>
+    <td width="2%"><img src="images/webpageBannerEndSmall.gif" alt="end" width="18" height="45"></td>
+  </tr>
+</table>
+<p><font color="#663333" face="Georgia, Times New Roman, Times, serif">The citation for Tuatara is:</font></p> 
+<p><font color="#663333" face="Georgia, Times New Roman, Times, serif">Maddison, W.P. &amp; A.&Oslash;.Mooers. 2007. Tuatara: Conservation priority 
+  in a phylogenetic context. Version 1.0. http://mesquiteproject.org/packages/tuatara</font></p>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="1%"><img src="images/webpageBannerStartSmall.gif" alt="start" width="18" height="45"></td>
+    <td width="97%" bgcolor="#999966"><h3><font color="#FAE9AF">&nbsp;&nbsp;<a name="acknowledgments" id="acknowledgments"></a><font color="#FFFFCC">8. 
+      Acknowledgments</font></font></h3></td>
+    <td width="2%"><img src="images/webpageBannerEndSmall.gif" alt="end" width="18" height="45"></td>
+  </tr>
+</table>
+<p><font color="#663333" face="Georgia, Times New Roman, Times, serif">Tuatara development was supported by NSERC Discovery grants to WPM and A&Oslash;M, and by fellowships to WPM and A&Oslash;M at the Wissenschaftskolleg zu Berlin.</font></p>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr> 
+    <td width="1%"><img src="images/webpageBannerStartSmall.gif" width="18" height="45"></td>
+    <td width="97%" bgcolor="#999966"> <h3><font color="#FAE9AF">&nbsp;&nbsp;<a name="references" id="references"></a><font color="#FFFFCC">9. 
+    References</font></font></h3></td>
+    <td width="2%"><img src="images/webpageBannerEndSmall.gif" width="18" height="45"></td>
+  </tr>
+</table>
+<font color="#663333" face="Georgia, Times New Roman, Times, serif"> 
+<p>Faith, D.P. 2007. Phylogenetic diversity and conservation. In S.P. Carroll 
+  and C.Fox, eds. Conservation Biology: Evolution in action. Oxford University 
+  Press, New York, NY.</p>
+<p>Hugall, A.F., Foster, R., &amp; M.S. Lee. 2007. Calibration choice, rate smoothing and the pattern of tetrapod diversificaiton according to the long-nuclear gene RAG-1.  Systematic Biology 56:543-563.</p>
+<p>Isaac, N.J.B., Turvey, S.T., Collen, B., Waterman, C. and Baillie, J.E.M. 2007. 
+  Mammals on the EDGE: conservation priorities based on threat and phylogeny. 
+  PLoS ONE 2(3):e296</p>
+<p>May, R.M. 1990. Taxonomy as Destiny. Nature, 347:129&#8211;30</p>
+<p>Redding, D.W. and Mooers, A.O. 2006. Incorporating evolutionary measures into 
+  conservation prioritization. Conservation Biology, 20:1670&#8211;8. </p>
+<p>Steel, M., Mimoto, A., and A.O. Mooers. 2007. Hedging one's bets: quantifying 
+  a taxon's expected contribution to future phylogenetic diversity. Evolutionary 
+  Bioinformatics Online 2007 3: 237-244.</p>
+<p>Vane-Wright, R. I., C. J. Humphries, and Williams. P.H. 1991. What to Protect? 
+  Systematics and the agony of choice. Biological Conservation 55: 235.</p>
+</font>
+<hr>
+<font color="#663333" face="Georgia, Times New Roman, Times, serif"> 
+<p>Copyright &copy; 2007 Wayne P. Maddison &amp; Arne &Oslash;. Mooers</p>
+</font> 
+<p>&nbsp;</p>
+
+</font> 
+</body>
+</html>

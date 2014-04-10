@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<mesquite>
+	<MessagesFromHome>
+		<version>1</version>
+
+		<notice><!--Tuatara install -->
+			<forVersion>250</forVersion>
+			<forBuildNumberAtLeast>486</forBuildNumberAtLeast>
+			<noticeNumber>1</noticeNumber>
+			<messageType>update</messageType>
+			<identity>Tuatara</identity>
+			<updateVersion>001</updateVersion>
+			<packageName>Tuatara v. 1.01</packageName>
+			<explanation>
+			<![CDATA[<img src="http://mesquiteproject.org/packages/tuatara/splash.gif"><p>
+			Tuatara is a package of Mesquite modules designed for analyzing conservation priorities in a phylogenetic context.  
+			For more information about the features of Tuatara, see the 
+			<a href = "http://mesquiteproject.org/packages/Tuatara/">Tuatara web page</a>.
+			]]>
+			</explanation>
+				<install>
+					<location>mesquite</location>
+					<file>tuatara</file>
+					<url>http://mesquiteproject.org/packages/tuatara/tuatara.zip</url>
+					<treatment>unzip</treatment>
+					<updateVersion>000</updateVersion>
+				</install>
+		</notice>
+	</MessagesFromHome>
+</mesquite>

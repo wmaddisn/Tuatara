@@ -1,0 +1,413 @@
+/* Mesquite source code, Treefarm package.  Copyright 1997-2006 W. Maddison, D. Maddison and P. Midford. 
+Version 1.11, June 2006.
+Disclaimer:  The Mesquite source code is lengthy and we are few.  There are no doubt inefficiencies and goofs in this code. 
+The commenting leaves much to be desired. Please approach this source code with the spirit of helping out.
+Perhaps with your help we can be more than a few, and make Mesquite better.
+
+Mesquite is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY.
+Mesquite's web site is http://mesquiteproject.org
+
+This source code and its compiled class files are free and modifiable under the terms of 
+GNU Lesser General Public License.  (http://www.gnu.org/copyleft/lesser.html)
+ */
+package mesquite.phycons.ExpMargDiv;
+/*~~  */
+
+import java.util.*;
+import java.awt.*;
+
+import mesquite.cont.lib.*;
+import mesquite.lib.*;
+import mesquite.lib.duties.*;
+import mesquite.treefarm.lib.*;
+
+/** ======================================================================== */
+public class ExpMargDiv extends NForTaxonWithTree {
+	CharSourceCoord characterSourceTask;
+	double [] cladeExtinctionProbs, cladeExtinctionProbsUp, expectedConnectionLengthDown,expectedConnectionLengthUp;
+	/*.................................................................................................................*/
+	public boolean startJob(String arguments, Object condition, CommandRecord commandRec, boolean hiredByName) {
+		characterSourceTask = (CharSourceCoord)hireCompatibleEmployee(commandRec, CharSourceCoord.class, ContinuousState.class, "Source of characters for " + getName());
+		if (characterSourceTask == null) {
+			return sorry(commandRec, getName() + " couldn't start because no source of characters obtained.");
+		}
+		return true;  
+	}
+	/*.................................................................................................................*/
+	public Snapshot getSnapshot(MesquiteFile file) {
+		Snapshot temp = new Snapshot();
+		temp.addLine( "getCharacterSource " , characterSourceTask);
+		return temp;
+	}
+	/*.................................................................................................................*/
+	public Object doCommand(String commandName, String arguments, CommandRecord commandRec, CommandChecker checker) {
+		if (checker.compare(this.getClass(), "Returns module supplying characters", null, commandName, "getCharacterSource")) {
+			return characterSourceTask;
+		}
+		else
+			return super.doCommand(commandName, arguments, commandRec, checker);
+	}
+	/*.................................................................................................................*/
+	/** returns whether this module is requesting to appear as a primary choice */
+	public boolean requestPrimaryChoice(){
+		return true;  
+	}
+	/*.................................................................................................................*/
+	public   void OLDdownPass(int node, Tree tree, ContinuousDistribution states, double [] cladeExtinctionProbs, double[] expectedConnectionLengthDown) {
+		if (tree.nodeIsTerminal(node)){
+			double probExtinction = states.getState(tree.taxonNumberOfNode(node), 0);
+			cladeExtinctionProbs[node] = probExtinction;
+
+		}
+		else {
+			int left = tree.firstDaughterOfNode(node);
+			downPass(left, tree, states, cladeExtinctionProbs, expectedConnectionLengthDown);
+
+			int right = tree.lastDaughterOfNode(node);
+			downPass(right, tree, states, cladeExtinctionProbs, expectedConnectionLengthDown);
+
+			cladeExtinctionProbs[node] = cladeExtinctionProbs[left]*cladeExtinctionProbs[right];
+			//for Polytomies: product of all daughters
+
+			//Four possibilities for descendants of this node
+			//1. both go extinct: no contribution to connection length
+			//2. right alone survives; pull connection length from right and also right's branch length
+			expectedConnectionLengthDown[node] = cladeExtinctionProbs[left]*(1-cladeExtinctionProbs[right])*(getBranchLength(tree, right) + expectedConnectionLengthDown[right]);
+			//3. left alone survives; pull connection length from left and also left's branch length
+			expectedConnectionLengthDown[node] += cladeExtinctionProbs[right]*(1-cladeExtinctionProbs[left])*(getBranchLength(tree, left) + expectedConnectionLengthDown[left]);
+			//4. both survive: This is an opportunity for a connection, but length at zero, hence no contribution
+
+			//for Polytomies: If only one survives, pull its connection.  If two or more survive, then no additon
+		}
+	}
+	/*.................................................................................................................*/
+	public   void downPass(int node, Tree tree, ContinuousDistribution states, double [] cladeExtinctionProbs, double[] expectedConnectionLengthDown) {
+		if (tree.nodeIsTerminal(node)){
+			double probExtinction = states.getState(tree.taxonNumberOfNode(node), 0);
+			cladeExtinctionProbs[node] = probExtinction;
+
+		}
+		else {
+			cladeExtinctionProbs[node] = 1.0;
+			//first, do downpass and count clade extinction probabilities
+			for (int d = tree.firstDaughterOfNode(node); tree.nodeExists(d); d = tree.nextSisterOfNode(d)){
+				downPass(d, tree, states, cladeExtinctionProbs, expectedConnectionLengthDown);
+				cladeExtinctionProbs[node] *= cladeExtinctionProbs[d];  //this clade goes extinct only if all daughters do
+			}
+
+			//Three possibilities for descendants of this node
+			//1. all go extinct: no contribution to connection length
+
+			//2. Single daughter survives; pull connection length from it and also its branch length
+			//Probability that only d survives is (1-cladeExtinctionProbs[d])*ProductAllDaughtersExceptDGoExtinct
+			//Which is cladeExtinctionProbs[node]*(1-cladeExtinctionProbs[d])/cladeExtinctionProbs[d])
+			//Thus we are in a position to consider all cases where exactly one daughter survives
+			expectedConnectionLengthDown[node] = 0;
+			for (int d = tree.firstDaughterOfNode(node); tree.nodeExists(d); d = tree.nextSisterOfNode(d)){
+				expectedConnectionLengthDown[node] += (1-cladeExtinctionProbs[d])/cladeExtinctionProbs[d]*cladeExtinctionProbs[node]*(getBranchLength(tree, d) + expectedConnectionLengthDown[d]);
+			}
+			//3. More than one daughter survives: This is an opportunity for a connection, but length at zero, hence no contribution
+
+			//*???*/if (!rooted)
+			//expectedConnectionLengthDown[node] /=  (1-cladeExtinctionProbs[node]);  //make conditional on at least one surviving
+			Debugg.println("Node " + node + " expectedConnectionLengthDown " + expectedConnectionLengthDown[node] + "   cladeExtinctionProbs " + cladeExtinctionProbs[node]);
+		}
+	}
+	boolean rooted = true;
+	boolean addRoot = false;
+	/*.................................................................................................................*/
+	public   void upPass(int node, Tree tree, double lengthFromRoot, ContinuousDistribution states, double [] cladeExtinctionProbs, double[] cladeExtinctionProbsUp, double[] expectedConnectionLengthDown, double[] expectedConnectionLengthUp, NumberArray results) {
+		if (tree.getRoot() != node || addRoot)
+			lengthFromRoot += getBranchLength(tree, node);
+
+		if (tree.getRoot() != node){  //NOT the root
+			//first, calculate probability all sisters go extinct, and probability exactly one survives
+			double probAllSistersGoExtinct  = 1.0;
+			for (int sister = tree.firstDaughterOfNode(tree.motherOfNode(node)); tree.nodeExists(sister); sister = tree.nextSisterOfNode(sister))
+				if (sister != node) 
+					probAllSistersGoExtinct  *= cladeExtinctionProbs[sister];
+
+			double probExactlyOneSisterSurvives = 0;
+			for (int sister = tree.firstDaughterOfNode(tree.motherOfNode(node)); tree.nodeExists(sister); sister = tree.nextSisterOfNode(sister))
+				if (sister != node)
+					probExactlyOneSisterSurvives +=(1-cladeExtinctionProbs[sister])/cladeExtinctionProbs[sister]*probAllSistersGoExtinct;
+
+			int mother = tree.motherOfNode(node);
+
+			if (tree.getRoot() ==mother){//if daughter of root, get expected connection length from sister only
+				//We are calculating this as rooted; hence the root must be included in any subtree
+				//Two possibilities: either the sister (other daughter of root) survived, or not.
+				//1. At least one sister survived, thus count length from root, but not further, because sister would have its root connection counted
+				expectedConnectionLengthUp[node] = (1-probAllSistersGoExtinct)*getBranchLength(tree, node);
+				//2. No sisters survive; connection length is from root, possibly including root if addRoot is on
+				expectedConnectionLengthUp[node] += probAllSistersGoExtinct*lengthFromRoot;
+
+				cladeExtinctionProbsUp[node]  = probAllSistersGoExtinct;
+			}
+			else { //not root and not daughter of root
+				//			Debugg.println("//node " + node + " probAllSistersGoExtinct " + probAllSistersGoExtinct);
+
+				cladeExtinctionProbsUp[node]  = probAllSistersGoExtinct*cladeExtinctionProbsUp[mother];
+				expectedConnectionLengthUp[node] = 0;
+
+				if (node == 4 || node == 5) 				Debugg.println("" + node + "------------");			
+				//Five possibilities
+				//1. both sister and mother go extinct.  By mother going extinct we mean nothing survives below and beside the mother; Thus no contribution to connection length unless rooted
+				//if rooted, count just length to root, possibly including root length if addRoot on
+				//expectedConnectionLengthUp[node] += cladeExtinctionProbsUp[node]*(lengthFromRoot);
+				if (node == 4 || node == 5) Debugg.println("cladeExtinctionProbsUp[node] " + cladeExtinctionProbsUp[node] + "lengthFromRoot  " + lengthFromRoot);			
+				double shouldBeOne = cladeExtinctionProbsUp[node];
+				//2. mother alone survives; connection length is from mother as well as this branch length
+				expectedConnectionLengthUp[node] += probAllSistersGoExtinct*(1-cladeExtinctionProbsUp[mother])*(getBranchLength(tree, node) + expectedConnectionLengthUp[mother]);
+				shouldBeOne += probAllSistersGoExtinct*(1-cladeExtinctionProbsUp[mother]);
+
+				//3. A single sister survives & mother goes extinct
+				for (int sister = tree.firstDaughterOfNode(tree.motherOfNode(node)); tree.nodeExists(sister); sister = tree.nextSisterOfNode(sister)){
+					if (sister != node){  //probablity of just this one surviving is (1-sisterExtProb)/sisterExtProb*probAllSistersGoExtinct
+						double probabilityJustThisSisterSurvives = cladeExtinctionProbsUp[mother]*(1-cladeExtinctionProbs[sister])/cladeExtinctionProbs[sister]*probAllSistersGoExtinct;
+						//if rooted, then count only to mother, because line to root is already taken by sister's presence
+						expectedConnectionLengthUp[node] += probabilityJustThisSisterSurvives*(getBranchLength(tree, node));
+						shouldBeOne += probabilityJustThisSisterSurvives;
+					}
+				}
+				//4.  mother and at least one sister survive; connection length is this branch length only
+				expectedConnectionLengthUp[node] += (1-cladeExtinctionProbsUp[mother])*(1-probAllSistersGoExtinct)*(getBranchLength(tree, node));
+				if (node == 4 || node == 5) Debugg.println("(1-cladeExtinctionProbsUp[mother])*(1-probAllSistersGoExtinct) " + (1-cladeExtinctionProbsUp[mother])*(1-probAllSistersGoExtinct) + " getBranchLength(tree, node)  " + getBranchLength(tree, node));			
+				shouldBeOne += (1-cladeExtinctionProbsUp[mother])*(1-probAllSistersGoExtinct);
+				//5. Mother goes extinct but Multiple sisters survive; connecti0n length is this branch length only
+				expectedConnectionLengthUp[node] += cladeExtinctionProbsUp[mother]*(1-probAllSistersGoExtinct - probExactlyOneSisterSurvives)*(getBranchLength(tree, node));
+				shouldBeOne += cladeExtinctionProbsUp[mother]*(1-probAllSistersGoExtinct - probExactlyOneSisterSurvives);
+
+				//*???*/if (!rooted)
+				//expectedConnectionLengthUp[node] /= (1-cladeExtinctionProbsUp[node]);
+			}
+		}
+		Debugg.println("Node " + node + " expectedConnectionLengthUp " + expectedConnectionLengthUp[node] + "   cladeExtinctionProbsUp " + cladeExtinctionProbsUp[node]);
+		if (tree.nodeIsTerminal(node)){
+
+			results.setValue(tree.taxonNumberOfNode(node), (1.0-cladeExtinctionProbs[node])*expectedConnectionLengthUp[node] + lengthFromRoot*cladeExtinctionProbs[node]); ///(1.0-cladeExtinctionProbs[node]));  //divide by survival of terminal to make conditional thereon
+		}
+		else {
+			for (int d = tree.firstDaughterOfNode(node); tree.nodeExists(d); d = tree.nextSisterOfNode(d))
+				upPass(d, tree, lengthFromRoot, states, cladeExtinctionProbs,  cladeExtinctionProbsUp, expectedConnectionLengthDown, expectedConnectionLengthUp, results);
+		}
+
+	}
+	/*.................................................................................................................*/
+	public   void MIXEDupPass(int node, Tree tree, double lengthFromRoot, ContinuousDistribution states, double [] cladeExtinctionProbs, double[] cladeExtinctionProbsUp, double[] expectedConnectionLengthDown, double[] expectedConnectionLengthUp, NumberArray results) {
+		if (tree.getRoot() != node || addRoot)
+			lengthFromRoot += getBranchLength(tree, node);
+
+		if (tree.getRoot() != node){  //NOT the root
+			//first, calculate probability all sisters go extinct, and probability exactly one survives
+			double probAllSistersGoExtinct  = 1.0;
+			for (int sister = tree.firstDaughterOfNode(tree.motherOfNode(node)); tree.nodeExists(sister); sister = tree.nextSisterOfNode(sister))
+				if (sister != node) 
+					probAllSistersGoExtinct  *= cladeExtinctionProbs[sister];
+
+			double probExactlyOneSisterSurvives = 0;
+			for (int sister = tree.firstDaughterOfNode(tree.motherOfNode(node)); tree.nodeExists(sister); sister = tree.nextSisterOfNode(sister))
+				if (sister != node)
+					probExactlyOneSisterSurvives +=(1-cladeExtinctionProbs[sister])/cladeExtinctionProbs[sister]*probAllSistersGoExtinct;
+
+			int mother = tree.motherOfNode(node);
+
+			if (tree.getRoot() ==mother){//if daughter of root, get expected connection length from sister only
+				if (rooted){ //We are calculating this as rooted; hence the root must be included in any subtree
+					//Two possibilities: either the sister (other daughter of root) survived, or not.
+					//1. At least one sister survived, thus count length from root, but not further, because sister would have its root connection counted
+					expectedConnectionLengthUp[node] = (1-probAllSistersGoExtinct)*getBranchLength(tree, node);
+					//2. No sisters survive; connection length is from root, possibly including root if addRoot is on
+					expectedConnectionLengthUp[node] += probAllSistersGoExtinct*lengthFromRoot;
+
+					cladeExtinctionProbsUp[node]  = probAllSistersGoExtinct;
+				}
+				else {  //not rooted, thus can short circuit root and go deeper into sister for the connection
+					//Three possibilities
+					//1. A single sister survived; count connection to sister
+					expectedConnectionLengthUp[node] = 0;
+					for (int sister = tree.firstDaughterOfNode(tree.motherOfNode(node)); tree.nodeExists(sister); sister = tree.nextSisterOfNode(sister)){
+						if (sister != node)  //probablity of just this one surviving is (1-sisterExtProb)/sisterExtProb*probAllSistersGoExtinct
+							expectedConnectionLengthUp[node] += (1-cladeExtinctionProbs[sister])/cladeExtinctionProbs[sister]*probAllSistersGoExtinct*(expectedConnectionLengthDown[sister] + getBranchLength(tree, sister) + getBranchLength(tree, node));
+					}
+					//2. Multple sisters survive, thus just count branch length of this node.
+					expectedConnectionLengthUp[node] += (1-probAllSistersGoExtinct-probExactlyOneSisterSurvives)*(getBranchLength(tree, node));
+
+					//3. All sisters went extinct; thus there is nothing to connect to, and no addition of length
+
+					cladeExtinctionProbsUp[node]  = probAllSistersGoExtinct;
+					/*???*/expectedConnectionLengthUp[node] /= (1-probAllSistersGoExtinct);
+				}
+			}
+			else { //not root and not daughter of root
+				//			Debugg.println("//node " + node + " probAllSistersGoExtinct " + probAllSistersGoExtinct);
+
+				cladeExtinctionProbsUp[node]  = probAllSistersGoExtinct*cladeExtinctionProbsUp[mother];
+				expectedConnectionLengthUp[node] = 0;
+
+				if (node == 4 || node == 5) 				Debugg.println("" + node + "------------");			
+				//Five possibilities
+				//1. both sister and mother go extinct.  By mother going extinct we mean nothing survives below and beside the mother; Thus no contribution to connection length unless rooted
+				if (rooted && tree.nodeIsTerminal(node))  //if rooted, count just length to root, possibly including root length if addRoot on
+					expectedConnectionLengthUp[node] += cladeExtinctionProbsUp[node]*(lengthFromRoot);
+				if (node == 4 || node == 5) Debugg.println("cladeExtinctionProbsUp[node] " + cladeExtinctionProbsUp[node] + "lengthFromRoot  " + lengthFromRoot);			
+				double shouldBeOne = cladeExtinctionProbsUp[node];
+				//2. mother alone survives; connection length is from mother as well as this branch length
+				expectedConnectionLengthUp[node] += probAllSistersGoExtinct*(1-cladeExtinctionProbsUp[mother])*(getBranchLength(tree, node) + expectedConnectionLengthUp[mother]);
+				shouldBeOne += probAllSistersGoExtinct*(1-cladeExtinctionProbsUp[mother]);
+
+				//3. A single sister survives & mother goes extinct
+				for (int sister = tree.firstDaughterOfNode(tree.motherOfNode(node)); tree.nodeExists(sister); sister = tree.nextSisterOfNode(sister)){
+					if (sister != node){  //probablity of just this one surviving is (1-sisterExtProb)/sisterExtProb*probAllSistersGoExtinct
+						double probabilityJustThisSisterSurvives = cladeExtinctionProbsUp[mother]*(1-cladeExtinctionProbs[sister])/cladeExtinctionProbs[sister]*probAllSistersGoExtinct;
+						if (rooted) //if rooted, then count only to mother, because line to root is already taken by sister's presence
+							expectedConnectionLengthUp[node] += probabilityJustThisSisterSurvives*(getBranchLength(tree, node));
+						else  //if not rooted, then can connect directly to sister
+							expectedConnectionLengthUp[node] += probabilityJustThisSisterSurvives*(getBranchLength(tree, node) + getBranchLength(tree, sister) + expectedConnectionLengthDown[sister]);
+						shouldBeOne += probabilityJustThisSisterSurvives;
+					}
+				}
+				//4.  mother and at least one sister survive; connection length is this branch length only
+				expectedConnectionLengthUp[node] += (1-cladeExtinctionProbsUp[mother])*(1-probAllSistersGoExtinct)*(getBranchLength(tree, node));
+				if (node == 4 || node == 5) Debugg.println("(1-cladeExtinctionProbsUp[mother])*(1-probAllSistersGoExtinct) " + (1-cladeExtinctionProbsUp[mother])*(1-probAllSistersGoExtinct) + " getBranchLength(tree, node)  " + getBranchLength(tree, node));			
+				shouldBeOne += (1-cladeExtinctionProbsUp[mother])*(1-probAllSistersGoExtinct);
+				//5. Mother goes extinct but Multiple sisters survive; connecti0n length is this branch length only
+				expectedConnectionLengthUp[node] += cladeExtinctionProbsUp[mother]*(1-probAllSistersGoExtinct - probExactlyOneSisterSurvives)*(getBranchLength(tree, node));
+				shouldBeOne += cladeExtinctionProbsUp[mother]*(1-probAllSistersGoExtinct - probExactlyOneSisterSurvives);
+				//Debugg.println("ONE " + shouldBeOne);			
+//				Debugg.println("sister&MotherExtinct " + shouldBeOne + "AllsistersExtinct & " + shouldBeOne);			
+//				Debugg.println("SisterOK " + shouldBeOne);			
+				//*???*/if (!rooted)
+				expectedConnectionLengthUp[node] /= (1-cladeExtinctionProbsUp[node]);
+			}
+		}
+		Debugg.println("Node " + node + " expectedConnectionLengthUp " + expectedConnectionLengthUp[node] + "   cladeExtinctionProbsUp " + cladeExtinctionProbsUp[node]);
+		if (tree.nodeIsTerminal(node)){
+
+			results.setValue(tree.taxonNumberOfNode(node), expectedConnectionLengthUp[node]); ///(1.0-cladeExtinctionProbs[node]));  //divide by survival of terminal to make conditional thereon
+		}
+		else {
+			for (int d = tree.firstDaughterOfNode(node); tree.nodeExists(d); d = tree.nextSisterOfNode(d))
+				upPass(d, tree, lengthFromRoot, states, cladeExtinctionProbs,  cladeExtinctionProbsUp, expectedConnectionLengthDown, expectedConnectionLengthUp, results);
+		}
+
+	}
+	/*.................................................................................................................*/
+	public   void OLDupPass(int node, Tree tree, double lengthFromRoot, ContinuousDistribution states, double [] cladeExtinctionProbs, double[] cladeExtinctionProbsUp, double[] expectedConnectionLengthDown, double[] expectedConnectionLengthUp, NumberArray results) {
+		if (tree.getRoot() != node || addRoot)
+			lengthFromRoot += getBranchLength(tree, node);
+		if (tree.getRoot() != node){  //NOT the root
+			int sister = tree.nextSisterOfNode(node);
+			if (!tree.nodeExists(sister))
+				sister = tree.previousSisterOfNode(node);
+			int mother = tree.motherOfNode(node);
+
+			if (tree.getRoot() ==mother){//if daughter of root, get expected connection length from sister only
+				if (rooted){ //We are calculating this as rooted; hence the root must be included in any subtree
+					//Two possibilities: either the sister (other daughter of root) survived, or not.
+					//1. sister survived, thus count length from root, but not further, because sister would have its root connection counted
+					expectedConnectionLengthUp[node] = (1-cladeExtinctionProbs[sister])*getBranchLength(tree, node);
+					//2. sister doesn't survive; connection length is from root, possibly including root if addRoot is on
+					expectedConnectionLengthUp[node] += cladeExtinctionProbs[sister]*lengthFromRoot;
+					//for Polytomies: substitute product of all sisters probs here, because if any one survives, we don't add root
+
+					cladeExtinctionProbsUp[node]  = cladeExtinctionProbs[sister];
+					//for Polytomies: product of all sisters
+				}
+				else {  //not rooted, thus can short circuit root and go deeper into sister for the connection
+					//Two possibilities, either the sister (other daughter of root) survived, or not.
+					//1. sister survived; count connection to sister
+					expectedConnectionLengthUp[node] = (1-cladeExtinctionProbs[sister])*(expectedConnectionLengthDown[sister] + getBranchLength(tree, sister) + getBranchLength(tree, node));
+					//2. sister went extinct; thus there is nothing to connect to, and no addition of length
+
+					//for Polytomies: if multiple sisters survive, count just branch length of this node; if one survies, count as above; if non survive; don't count
+
+					cladeExtinctionProbsUp[node]  = cladeExtinctionProbs[sister];
+					//for Polytomies: product of all sisters
+				}
+			}
+			else { //not root and not daughter of root
+
+				//Four possibilities
+				//1. both sister and mother go extinct.  By mother going extinct we mean nothing survives below and beside the mother; Thus no contribution to connection length unless rooted
+				if (rooted)  //if rooted, count just length to root, possibly including root length if addRoot on
+					expectedConnectionLengthUp[node] = cladeExtinctionProbs[sister]*cladeExtinctionProbsUp[mother]*(lengthFromRoot);
+				//2. mother alone survives; connection length is from mother as well as this branch length
+				expectedConnectionLengthUp[node] += cladeExtinctionProbs[sister]*(1-cladeExtinctionProbsUp[mother])*(getBranchLength(tree, node) + expectedConnectionLengthUp[mother]);
+				//3. sister alone survives; connection length is from sister as well as this branch length and sister's
+				if (rooted) //if rooted, then count only to mother, because line to root is already taken by sister's presence
+					expectedConnectionLengthUp[node] += cladeExtinctionProbsUp[mother]*(1-cladeExtinctionProbs[sister])*(getBranchLength(tree, node));
+				else  //if not rooted, then can connect directly to sister
+					expectedConnectionLengthUp[node] += cladeExtinctionProbsUp[mother]*(1-cladeExtinctionProbs[sister])*(getBranchLength(tree, node) + getBranchLength(tree, sister) + expectedConnectionLengthDown[sister]);
+				//4. both mother and sister survive; connection length is this branch length only
+				expectedConnectionLengthUp[node] += (1-cladeExtinctionProbsUp[mother])*(1-cladeExtinctionProbs[sister])*(getBranchLength(tree, node));
+				//for Polytomies: if multple sisters survive, then count just this branch length; if one survivves, count as above; if none survive, count only to root and only if rooted
+
+				cladeExtinctionProbsUp[node]  = cladeExtinctionProbs[sister]*cladeExtinctionProbsUp[mother];
+				//for Polytomies: product of all sisters & mother
+			}
+		}
+		if (tree.nodeIsTerminal(node)){
+
+			results.setValue(tree.taxonNumberOfNode(node), expectedConnectionLengthUp[node]); ///(1.0-cladeExtinctionProbs[node]));  //divide by survival of terminal to make conditional thereon
+		}
+		else {
+			int left = tree.firstDaughterOfNode(node);
+			int right = tree.lastDaughterOfNode(node);
+			upPass(left, tree, lengthFromRoot, states, cladeExtinctionProbs,  cladeExtinctionProbsUp, expectedConnectionLengthDown, expectedConnectionLengthUp, results);
+			upPass(right, tree, lengthFromRoot, states, cladeExtinctionProbs,  cladeExtinctionProbsUp, expectedConnectionLengthDown, expectedConnectionLengthUp, results);
+		}
+
+	}
+	private double getBranchLength(Tree tree, int node){
+		return tree.getBranchLength(node, 0);
+	}
+	protected ContinuousDistribution  observedStates;
+	/*.................................................................................................................*/
+	public void calculateNumbers(Taxa taxa, Tree tree, NumberArray results, MesquiteString resultsString, CommandRecord commandRec){
+		if (tree == null)
+			return;
+		if (cladeExtinctionProbs == null || cladeExtinctionProbs.length < tree.getNumNodeSpaces())
+			cladeExtinctionProbs = new double[tree.getNumNodeSpaces()];
+		if (cladeExtinctionProbsUp == null || cladeExtinctionProbsUp.length < tree.getNumNodeSpaces())
+			cladeExtinctionProbsUp = new double[tree.getNumNodeSpaces()];
+		if (expectedConnectionLengthDown == null || expectedConnectionLengthDown.length < tree.getNumNodeSpaces())
+			expectedConnectionLengthDown = new double[tree.getNumNodeSpaces()];
+		if (expectedConnectionLengthUp == null || expectedConnectionLengthUp.length < tree.getNumNodeSpaces())
+			expectedConnectionLengthUp = new double[tree.getNumNodeSpaces()];
+		DoubleArray.zeroArray(cladeExtinctionProbs);
+		DoubleArray.zeroArray(cladeExtinctionProbsUp);
+		DoubleArray.zeroArray(expectedConnectionLengthDown);
+		DoubleArray.zeroArray(expectedConnectionLengthUp);
+		results.zeroArray();
+		observedStates = (ContinuousDistribution)characterSourceTask.getCurrentCharacter(tree, commandRec);
+		//calculate probs of different clade sizes
+		downPass(tree.getRoot(), tree, observedStates, cladeExtinctionProbs, expectedConnectionLengthDown);
+		//calculate credit to each top
+		upPass(tree.getRoot(), tree, 0.0, observedStates, cladeExtinctionProbs, cladeExtinctionProbsUp, expectedConnectionLengthDown, expectedConnectionLengthUp, results);
+		//harvest array
+	}
+	/*.................................................................................................................*/
+	public String getVeryShortName() {
+		return "EMD";
+	}
+	/*.................................................................................................................*/
+	public String getName() {
+		return "Expected Marginal Contribution to Diversity";
+	}
+	/*.................................................................................................................*/
+	public String getVersion() {
+		return null;
+	}
+	/*.................................................................................................................*/
+	public boolean isPrerelease() {
+		return false;
+	}
+	/*.................................................................................................................*/
+	/** returns an explanation of what the module does.*/
+	public String getExplanation() {
+		return "";
+	}
+
+}
+

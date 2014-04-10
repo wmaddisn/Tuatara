@@ -1,0 +1,328 @@
+#NEXUS
+[written Sat Oct 13 16:42:57 PDT 2007 by Mesquite  version 2.0+ (build j08) at Thrandina.local/10.0.1.6 (Wayne Maddison)]
+
+BEGIN TAXA;
+	TITLE Species;
+	DIMENSIONS NTAX=47;
+	TAXLABELS
+		Allocebus_trichotis_EN Arctocebus_aureus_NT Arctocebus_calabarensis_NT Avahi_laniger_NT Cheirogaleus_major_LC Cheirogaleus_medius_LC Daubentonia_madagascariensis_EN Eulemur_coronatus_VU Eulemur_fulvus_LC Eulemur_macaco_VU Eulemur_mongoz_VU Eulemur_rubriventer_VU Euoticus_elegantulus_NT Euoticus_pallidus_NT Galago_alleni_NT Galago_gallarum_NT Galagoides_demidoff_LC Galagoides_zanzibaricus_NT Galago_matschiei_NT Galago_moholi_LC Galago_senegalensis_LC Hapalemur_aureus_CR Hapalemur_griseus_LC Hapalemur_simus_CR Indri_indri_EN Lemur_catta_VU Lepilemur_dorsalis_VU Lepilemur_edwardsi_NT Lepilemur_leucopus_NT Lepilemur_microdon_NT Lepilemur_mustelinus_NT Lepilemur_ruficaudatus_NT Lepilemur_septentrionalis_NT Loris_tardigradus_EN Microcebus_coquereli_VU Microcebus_murinus_LC Microcebus_rufus_LC Nycticebus_coucang_LC Nycticebus_pygmaeus_VU Otolemur_crassicaudatus_LC Otolemur_garnettii_LC Perodicticus_potto_LC Phaner_furcifer_NT Propithecus_diadema_EN Propithecus_tattersalli_CR Propithecus_verreauxi_VU Varecia_variegata_EN 
+	;
+	BLOCKID WM1159b007c9e1;
+
+END;
+
+
+BEGIN CHARACTERS;
+	TITLE  IUCN_risk;
+	DIMENSIONS  NCHAR=1;
+	FORMAT DATATYPE = CONTINUOUS;
+CHARSTATELABELS 
+		1 'P(extinction)' ; 
+	MATRIX
+	Allocebus_trichotis_EN            0.5
+	Arctocebus_aureus_NT              0.01
+	Arctocebus_calabarensis_NT        0.01
+	Avahi_laniger_NT                  0.01
+	Cheirogaleus_major_LC             0.0010
+	Cheirogaleus_medius_LC            0.0010
+	Daubentonia_madagascariensis_EN   0.5
+	Eulemur_coronatus_VU              0.1
+	Eulemur_fulvus_LC                 0.0010
+	Eulemur_macaco_VU                 0.1
+	Eulemur_mongoz_VU                 0.1
+	Eulemur_rubriventer_VU            0.1
+	Euoticus_elegantulus_NT           0.01
+	Euoticus_pallidus_NT              0.01
+	Galago_alleni_NT                  0.01
+	Galago_gallarum_NT                0.01
+	Galagoides_demidoff_LC            0.01
+	Galagoides_zanzibaricus_NT        0.0010
+	Galago_matschiei_NT               0.0010
+	Galago_moholi_LC                  0.0010
+	Galago_senegalensis_LC            0.01
+	Hapalemur_aureus_CR               0.9
+	Hapalemur_griseus_LC              0.0010
+	Hapalemur_simus_CR                0.9
+	Indri_indri_EN                    0.5
+	Lemur_catta_VU                    0.1
+	Lepilemur_dorsalis_VU             0.1
+	Lepilemur_edwardsi_NT             0.01
+	Lepilemur_leucopus_NT             0.01
+	Lepilemur_microdon_NT             0.01
+	Lepilemur_mustelinus_NT           0.01
+	Lepilemur_ruficaudatus_NT         0.01
+	Lepilemur_septentrionalis_NT      0.01
+	Loris_tardigradus_EN              0.5
+	Microcebus_coquereli_VU           0.1
+	Microcebus_murinus_LC             0.0010
+	Microcebus_rufus_LC               0.0010
+	Nycticebus_coucang_LC             0.0010
+	Nycticebus_pygmaeus_VU            0.1
+	Otolemur_crassicaudatus_LC        0.0010
+	Otolemur_garnettii_LC             0.0010
+	Perodicticus_potto_LC             0.0010
+	Phaner_furcifer_NT                0.01
+	Propithecus_diadema_EN            0.5
+	Propithecus_tattersalli_CR        0.9
+	Propithecus_verreauxi_VU          0.1
+	Varecia_variegata_EN              0.5
+
+;
+		BLOCKID WM1159b007cb80;
+
+
+END;
+BEGIN TREES;
+	Title Vos06_prosimian_supertree;
+	LINK Taxa = Species;
+	TRANSLATE
+		1 Allocebus_trichotis_EN,
+		2 Arctocebus_aureus_NT,
+		3 Arctocebus_calabarensis_NT,
+		4 Avahi_laniger_NT,
+		5 Cheirogaleus_major_LC,
+		6 Cheirogaleus_medius_LC,
+		7 Daubentonia_madagascariensis_EN,
+		8 Eulemur_coronatus_VU,
+		9 Eulemur_fulvus_LC,
+		10 Eulemur_macaco_VU,
+		11 Eulemur_mongoz_VU,
+		12 Eulemur_rubriventer_VU,
+		13 Euoticus_elegantulus_NT,
+		14 Euoticus_pallidus_NT,
+		15 Galago_alleni_NT,
+		16 Galago_gallarum_NT,
+		17 Galagoides_demidoff_LC,
+		18 Galagoides_zanzibaricus_NT,
+		19 Galago_matschiei_NT,
+		20 Galago_moholi_LC,
+		21 Galago_senegalensis_LC,
+		22 Hapalemur_aureus_CR,
+		23 Hapalemur_griseus_LC,
+		24 Hapalemur_simus_CR,
+		25 Indri_indri_EN,
+		26 Lemur_catta_VU,
+		27 Lepilemur_dorsalis_VU,
+		28 Lepilemur_edwardsi_NT,
+		29 Lepilemur_leucopus_NT,
+		30 Lepilemur_microdon_NT,
+		31 Lepilemur_mustelinus_NT,
+		32 Lepilemur_ruficaudatus_NT,
+		33 Lepilemur_septentrionalis_NT,
+		34 Loris_tardigradus_EN,
+		35 Microcebus_coquereli_VU,
+		36 Microcebus_murinus_LC,
+		37 Microcebus_rufus_LC,
+		38 Nycticebus_coucang_LC,
+		39 Nycticebus_pygmaeus_VU,
+		40 Otolemur_crassicaudatus_LC,
+		41 Otolemur_garnettii_LC,
+		42 Perodicticus_potto_LC,
+		43 Phaner_furcifer_NT,
+		44 Propithecus_diadema_EN,
+		45 Propithecus_tattersalli_CR,
+		46 Propithecus_verreauxi_VU,
+		47 Varecia_variegata_EN;
+	TREE 'Vos_supertree' = ((7:34.9,(((6:15.2,5:15.2):5.5,((35:12.8,(36:6.4,37:6.4):6.4):0.6,1:13.4):7.3):3.4,43:24.1):10.8,((((45:5.4,46:5.4):4.4,44:9.8):8.9,4:18.7):2.0,25:20.7):14.2,(47:21.6,(((10:5.9,9:5.9,(11:5.7,12:5.7):0.2):1.1,8:7.0):9.4,(((23:7.2,22:7.2):2.8,24:10.0):0.2,26:10.2):6.2):5.2):13.3,(29:5.2,31:5.2,27:5.2,28:5.2,30:5.2,32:5.2,33:5.2):29.7):24.2,(((((38:11.9,39:11.9):12.0,34:23.9):0.9,(3:9.3,2:9.3):15.5):1.4,42:26.2):4.0,(21:14.1,(40:7.0,41:7.0):7.1,15:14.1,17:14.1,18:14.1,20:14.1,16:14.1,(13:7.2,14:7.2):6.9,19:14.1):16.1):28.9);
+
+END;
+
+
+BEGIN ASSUMPTIONS;
+	TYPESET * UNTITLED   =  Squared:  1;
+
+END;
+
+BEGIN MESQUITECHARMODELS;
+	ProbModelSet * UNTITLED   =  Brownian_default:  1;
+END;
+
+Begin MESQUITE;
+		MESQUITESCRIPTVERSION 2;
+		TITLE AUTO;
+		tell ProjectCoordinator;
+		getEmployee #mesquite.minimal.ManageTaxa.ManageTaxa;
+		tell It;
+			setID 0 33337857627197445 WM1159b007c9e1;
+			tell It;
+				setDefaultOrder  6 34 33 11 2 1 0 18 15 14 16 17 44 45 39 43 40 41 46 42 36 20 19 21 12 22 25 26 23 27 24 28 29 32 3 4 5 30 31 37 38 35 7 10 8 9 13;
+				attachments ;
+			endTell;
+		endTell;
+		getEmployee #mesquite.charMatrices.ManageCharacters.ManageCharacters;
+		tell It;
+			setID 0 7722396835100380889 WM1159b007cb80;
+			checksum 0 2305161766 WM1159b007cb80;
+		endTell;
+		getEmployee  #mesquite.minimal.ManageTaxa.ManageTaxa;
+		tell It;
+			showTaxa #33337857627197445 #mesquite.lists.TaxonList.TaxonList;
+			tell It;
+				setTaxa #33337857627197445;
+				getWindow;
+				tell It;
+					newAssistant  #mesquite.lists.DefaultTaxaOrder.DefaultTaxaOrder;
+					newAssistant  #mesquite.lists.TaxonListCurrPartition.TaxonListCurrPartition;
+					setExplanationSize 30;
+					setAnnotationSize 20;
+					setFontIncAnnot 0;
+					setFontIncExp 0;
+					setSize 1060 632;
+					setLocation 77 33;
+					setFont SanSerif;
+					setFontSize 10;
+					getToolPalette;
+					tell It;
+					endTell;
+				endTell;
+				showWindow;
+				getEmployee #mesquite.lists.TaxonListAnnotPanel.TaxonListAnnotPanel;
+				tell It;
+					togglePanel off;
+				endTell;
+			endTell;
+		endTell;
+		getEmployee  #mesquite.trees.BasicTreeWindowCoord.BasicTreeWindowCoord;
+		tell It;
+			makeTreeWindow #33337857627197445  #mesquite.trees.BasicTreeWindowMaker.BasicTreeWindowMaker;
+			tell It;
+				setTreeSource  #mesquite.trees.StoredTrees.StoredTrees;
+				tell It;
+					setTreeBlock 1;
+					toggleUseWeights off;
+				endTell;
+				setAssignedID 737.1191993550851.4259792383085450111;
+				getTreeWindow;
+				tell It;
+					setExplanationSize 30;
+					setAnnotationSize 20;
+					setFontIncAnnot 0;
+					setFontIncExp 0;
+					setSize 1060 632;
+					setLocation 77 33;
+					setFont SanSerif;
+					setFontSize 10;
+					getToolPalette;
+					tell It;
+					endTell;
+					getTreeDrawCoordinator #mesquite.trees.BasicTreeDrawCoordinator.BasicTreeDrawCoordinator;
+				tell It;
+					suppress;
+					setTreeDrawer  #mesquite.trees.SquareTree.SquareTree;
+					tell It;
+						setNodeLocs #mesquite.trees.NodeLocsStandard.NodeLocsStandard;
+						tell It;
+							stretchToggle off;
+							branchLengthsToggle on;
+							toggleScale on;
+							toggleBroadScale off;
+							toggleCenter on;
+							toggleEven on;
+							namesAngle ?;
+						endTell;
+						setEdgeWidth 6;
+						orientUp;
+						toggleCorners off;
+					endTell;
+					setBackground White;
+					setBranchColor Black;
+					showNodeNumbers off;
+					showBranchColors on;
+					labelBranchLengths off;
+					centerBrLenLabels on;
+					showBrLensUnspecified on;
+					showBrLenLabelsOnTerminals on;
+					setBrLenLabelColor 0 0 255;
+					setNumBrLenDecimals 6;
+					desuppress;
+					getEmployee #mesquite.trees.BasicDrawTaxonNames.BasicDrawTaxonNames;
+					tell It;
+						setColor Black;
+						toggleColorPartition on;
+						toggleShadePartition off;
+						toggleNodeLabels on;
+						toggleCenterNodeNames off;
+						toggleShowNames on;
+					endTell;
+				endTell;
+					setTreeNumber 1;
+					useSuggestedSize on;
+					toggleTextOnTree off;
+				endTell;
+				showWindow;
+				getEmployee #mesquite.trees.ColorBranches.ColorBranches;
+				tell It;
+					setColor Red;
+					removeColor off;
+				endTell;
+				getEmployee #mesquite.ornamental.BranchNotes.BranchNotes;
+				tell It;
+					setAlwaysOn off;
+				endTell;
+				getEmployee #mesquite.ornamental.ColorTreeByPartition.ColorTreeByPartition;
+				tell It;
+					colorByPartition off;
+				endTell;
+			endTell;
+		endTell;
+		getEmployee  #mesquite.charMatrices.BasicDataWindowCoord.BasicDataWindowCoord;
+		tell It;
+			showDataWindow #7722396835100380889 #mesquite.charMatrices.BasicDataWindowMaker.BasicDataWindowMaker;
+			tell It;
+				getWindow;
+				tell It;
+					getTable;
+					tell It;
+						rowNamesWidth 205;
+					endTell;
+					setExplanationSize 30;
+					setAnnotationSize 20;
+					setFontIncAnnot 0;
+					setFontIncExp 0;
+					setSize 1060 632;
+					setLocation 77 33;
+					setFont SanSerif;
+					setFontSize 10;
+					getToolPalette;
+					tell It;
+						setTool mesquite.charMatrices.SortTaxa.SortTaxa.taxaSort;
+					endTell;
+					setTool mesquite.charMatrices.SortTaxa.SortTaxa.taxaSort;
+					colorCells  #mesquite.charMatrices.NoColor.NoColor;
+					setBackground White;
+					toggleShowNames on;
+					toggleShowTaxonNames on;
+					toggleTight off;
+					toggleShowChanges on;
+					toggleSeparateLines off;
+					toggleShowStates on;
+					toggleAutoWCharNames on;
+					toggleShowDefaultCharNames off;
+					toggleConstrainCW on;
+					setColumnWidth 70;
+					toggleBirdsEye off;
+					toggleColorsPanel off;
+					birdsEyeWidth 2;
+					toggleLinkedScrolling on;
+					toggleScrollLinkedTables off;
+				endTell;
+				showWindow;
+				getEmployee #mesquite.charMatrices.AnnotPanel.AnnotPanel;
+				tell It;
+					togglePanel off;
+				endTell;
+				getEmployee #mesquite.charMatrices.CharReferenceStrip.CharReferenceStrip;
+				tell It;
+					showStrip off;
+				endTell;
+				getEmployee #mesquite.charMatrices.ColorCells.ColorCells;
+				tell It;
+					setColor Red;
+					removeColor off;
+				endTell;
+			endTell;
+		endTell;
+		endTell;
+end;
+
+

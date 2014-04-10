@@ -1,0 +1,364 @@
+#NEXUS
+[written Wed Oct 24 16:36:07 PDT 2007 by Mesquite  version 2.0+ (build j10d) at Thrandina.local/10.0.1.6 (Wayne Maddison)]
+
+BEGIN TAXA;
+	TITLE species;
+	DIMENSIONS NTAX=26;
+	TAXLABELS
+		A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 
+	;
+	IDS WM1159bc12a7d95 WM1159bc12a7d96 WM1159bc12a7d97 WM1159bc12a7d98 WM1159bc12a7d99 WM1159bc12a7d100 WM1159bc12a7d101 WM1159bc12a7d102 WM1159bc12a7d103 WM1159bc12a7d104 WM1159bc12a7d105 WM1159bc12a7d106 WM1159bc12a7d107 WM1159bc12a7d108 WM1159bc12a7d109 WM1159bc12a7d110 WM1159bc12a7d111 WM1159bc12a7d112 WM1159bc12a7d113 WM1159bc12a7d114 WM1159bc12a7d115 WM1159bc12a7d116 WM1159bc12a7d117 WM1159bc12a7d118 WM1159bc12a7d119 WM1159bc12a7d120 ;
+	BLOCKID WM1159bc12a7d3;
+
+END;
+
+
+BEGIN CHARACTERS;
+	TITLE  Extinction_Probabilities;
+	DIMENSIONS  NCHAR=1;
+	FORMAT DATATYPE = CONTINUOUS;
+CHARSTATELABELS 
+		1 'P(extinction)' ; 
+	MATRIX
+	A   0.9
+	B   0.02
+	C   0.1
+	D   0.02
+	E   0.7
+	F   0.4
+	G   0.4
+	H   0.02
+	I   0.9
+	J   0.02
+	K   0.02
+	L   0.02
+	M   0.9
+	N   0.02
+	O   0.02
+	P   0.7
+	Q   0.02
+	R   0.1
+	S   0.02
+	T   0.4
+	U   0.4
+	V   0.4
+	W   0.7
+	X   0.02
+	Y   0.02
+	Z   0.1
+
+;
+	IDS WM1159bc163d02 ;
+	BLOCKID WM1159bc163d00;
+
+
+END;
+BEGIN TREES;
+	Title Simulated_Trees;
+	LINK Taxa = species;
+	TRANSLATE
+		1 A,
+		2 B,
+		3 C,
+		4 D,
+		5 E,
+		6 F,
+		7 G,
+		8 H,
+		9 I,
+		10 J,
+		11 K,
+		12 L,
+		13 M,
+		14 N,
+		15 O,
+		16 P,
+		17 Q,
+		18 R,
+		19 S,
+		20 T,
+		21 U,
+		22 V,
+		23 W,
+		24 X,
+		25 Y,
+		26 Z;
+	TREE Phylogeny = (((((((((12:1.1880891118108843,2:1.1880891118108843):2.2733859952860045,21:3.461475107096582):1.08121899752124,11:4.5426941046180005):1.4674525422731957,26:6.0101466468915445):1.1202919249973295,1:7.130438571889198):1.839907984809777,(((6:0.2098390190383984,19:0.2098390190383984):2.030660607480338,(14:1.0881399291752085,5:1.0881399291752085):1.1523596973436618):2.75410106130482,(25:0.6713275115260459,13:0.6713275115260459):4.323273176297629):3.975745868875255):0.2379704192104771,((4:3.6216282292672264,(18:0.46015271891992715,8:0.46015271891992715):3.161475510347455):4.06014343392909,(24:4.023476852833435,((15:0.5113922696419578,3:0.5113922696419578):2.56032394000089,7:3.0717162096427364):0.9517606431904823):3.6582948103631496):1.5265453127118):0.7055773502691673,((20:2.114038297446878,16:2.114038297446878):1.3594736543925205,(22:0.438548594774698,(9:0.29375059989966695,23:0.29375059989966695):0.14479799487504694):3.0349633570640275):6.440382374339309):0.7161338232609905,(17:1.7043318564201477,10:1.7043318564201477):8.925696293019922):0.0;
+
+END;
+
+
+BEGIN ASSUMPTIONS;
+	TYPESET * UNTITLED   =  Squared:  1;
+
+END;
+
+BEGIN MESQUITECHARMODELS;
+	ProbModelSet * UNTITLED   =  Brownian_default:  1;
+END;
+
+Begin MESQUITE;
+		MESQUITESCRIPTVERSION 2;
+		TITLE AUTO;
+		tell ProjectCoordinator;
+		getEmployee #mesquite.minimal.ManageTaxa.ManageTaxa;
+		tell It;
+			setID 0 2541187641863393306 WM1159bc12a7d3;
+		endTell;
+		getEmployee #mesquite.charMatrices.ManageCharacters.ManageCharacters;
+		tell It;
+			setID 0 380755927873853346 WM1159bc163d00;
+			checksum 0 1822716236 WM1159bc163d00;
+		endTell;
+		getEmployee  #mesquite.trees.BasicTreeWindowCoord.BasicTreeWindowCoord;
+		tell It;
+			makeTreeWindow #2541187641863393306  #mesquite.trees.BasicTreeWindowMaker.BasicTreeWindowMaker;
+			tell It;
+				setTreeSource  #mesquite.trees.StoredTrees.StoredTrees;
+				tell It;
+					setTreeBlock 1;
+					toggleUseWeights off;
+				endTell;
+				setAssignedID 1159.1192319083537.8483751163309318970;
+				getTreeWindow;
+				tell It;
+					popOut;
+					setExplanationSize 30;
+					setAnnotationSize 20;
+					setFontIncAnnot 0;
+					setFontIncExp 0;
+					setSize 569 394;
+					setLocation 666 33;
+					setFont SanSerif;
+					setFontSize 10;
+					getToolPalette;
+					tell It;
+					endTell;
+					getTreeDrawCoordinator #mesquite.trees.BasicTreeDrawCoordinator.BasicTreeDrawCoordinator;
+				tell It;
+					suppress;
+					setTreeDrawer  #mesquite.trees.SquareTree.SquareTree;
+					tell It;
+						setNodeLocs #mesquite.trees.NodeLocsStandard.NodeLocsStandard;
+						tell It;
+							stretchToggle off;
+							branchLengthsToggle on;
+							toggleScale on;
+							toggleBroadScale off;
+							toggleCenter on;
+							toggleEven on;
+							namesAngle ?;
+						endTell;
+						setEdgeWidth 6;
+						orientUp;
+						toggleCorners off;
+					endTell;
+					setBackground White;
+					setBranchColor Black;
+					showNodeNumbers off;
+					showBranchColors on;
+					labelBranchLengths off;
+					centerBrLenLabels on;
+					showBrLensUnspecified on;
+					showBrLenLabelsOnTerminals on;
+					setBrLenLabelColor 0 0 255;
+					setNumBrLenDecimals 6;
+					desuppress;
+					getEmployee #mesquite.trees.BasicDrawTaxonNames.BasicDrawTaxonNames;
+					tell It;
+						setColor Black;
+						toggleColorPartition on;
+						toggleShadePartition off;
+						toggleNodeLabels on;
+						toggleCenterNodeNames off;
+						toggleShowNames on;
+					endTell;
+				endTell;
+					setTreeNumber 1;
+					useSuggestedSize on;
+					toggleTextOnTree off;
+				endTell;
+				showWindow;
+				getEmployee #mesquite.trees.ColorBranches.ColorBranches;
+				tell It;
+					setColor Red;
+					removeColor off;
+				endTell;
+				getEmployee #mesquite.ornamental.BranchNotes.BranchNotes;
+				tell It;
+					setAlwaysOn off;
+				endTell;
+				getEmployee #mesquite.ornamental.ColorTreeByPartition.ColorTreeByPartition;
+				tell It;
+					colorByPartition off;
+				endTell;
+			endTell;
+		endTell;
+		getEmployee  #mesquite.charMatrices.BasicDataWindowCoord.BasicDataWindowCoord;
+		tell It;
+			showDataWindow #380755927873853346 #mesquite.charMatrices.BasicDataWindowMaker.BasicDataWindowMaker;
+			tell It;
+				getWindow;
+				tell It;
+					setExplanationSize 30;
+					setAnnotationSize 20;
+					setFontIncAnnot 0;
+					setFontIncExp 0;
+					setSize 633 402;
+					setLocation 4 29;
+					setFont SanSerif;
+					setFontSize 10;
+					getToolPalette;
+					tell It;
+						setTool mesquite.charMatrices.BasicDataWindowMaker.BasicDataWindow.ibeam;
+					endTell;
+					setTool mesquite.charMatrices.BasicDataWindowMaker.BasicDataWindow.ibeam;
+					colorCells  #mesquite.charMatrices.NoColor.NoColor;
+					setBackground White;
+					toggleShowNames on;
+					toggleShowTaxonNames on;
+					toggleTight off;
+					toggleShowChanges on;
+					toggleSeparateLines off;
+					toggleShowStates on;
+					toggleAutoWCharNames on;
+					toggleShowDefaultCharNames off;
+					toggleConstrainCW on;
+					setColumnWidth 70;
+					toggleBirdsEye off;
+					toggleColorsPanel off;
+					birdsEyeWidth 2;
+					toggleLinkedScrolling on;
+					toggleScrollLinkedTables off;
+				endTell;
+				showWindow;
+				getEmployee #mesquite.charMatrices.AnnotPanel.AnnotPanel;
+				tell It;
+					togglePanel off;
+				endTell;
+				getEmployee #mesquite.charMatrices.CharReferenceStrip.CharReferenceStrip;
+				tell It;
+					showStrip off;
+				endTell;
+				getEmployee #mesquite.charMatrices.ColorCells.ColorCells;
+				tell It;
+					setColor Red;
+					removeColor off;
+				endTell;
+			endTell;
+		endTell;
+		newAssistant  #mesquite.basic.ExamplesNavigator.ExamplesNavigator;
+		tell It;
+			setNextFileName '04-conservation.nex';
+			setPrevFileName '02-conservation.nex';
+			getWindow;
+			tell It;
+					popOut;
+					setExplanationSize 0;
+					setAnnotationSize 0;
+					setFontIncAnnot 0;
+					setFontIncExp 0;
+					setSize 667 327;
+					setLocation 8 551;
+					setFont SanSerif;
+					setFontSize 14;
+				setExplanation 'The conservation priority measures can be used in other contexts, such as charts.  The measures are simply values for the taxa.  Thus, you can make either a Bar & Line chart for taxa, or a Scattergram for taxa, and display the priority measures.  Here shown is a scattergram to show the relationship between two conservation priority measures, HEDGE and EDGE.  This was done by selecting "Different" to the scattergram''s question about the same or different axes.^n^nTry selecting a spot in the chart.  Note that the chart suddenly changes.  The reason is that the selected taxa are considered "safe"; that is, their probability of extinction is considered 0.  In this way you can see how implementation of adequate protection of endangered species can change subsequent priorities for the other species.^n^nTo change the assumption about whether selected taxa are considered safe, choose the desired option under the Selected Species submenu.  In the charts, it is in the Chart menu or in the X.Axis or Y.axis menus.  In the columns of the List of Taxa window, it was in the column headings drop down menu.  Your choices are that selected species are secure, that they are extinct, or to ignore species election in calculations.';
+				setTitle Charts;
+				toggleFileNames off;
+				setPrevButtonName Previous;
+				setNextButtonName Next;
+			endTell;
+			showWindow;
+		endTell;
+		newAssistant  #mesquite.charts.TaxaScattergram.TaxaScattergram;
+		tell It;
+			setTaxonSource  #mesquite.minimal.StoredTaxa.StoredTaxa;
+			tell It;
+				setTaxa #2541187641863393306;
+			endTell;
+			setTaxa #2541187641863393306;
+			axesDifferent;
+			setValuesX  #mesquite.tuatara.ConservationPriority.ConservationPriority;
+			tell It;
+				setTreeSource  #mesquite.trees.TreeOfContext.TreeOfContext;
+				tell It;
+					setContextID 1159.1192319083537.8483751163309318970;
+				endTell;
+				setNumberTask  #mesquite.tuatara.EvolDistinct.EvolDistinct;
+				tell It;
+					toggleWeight on;
+					getCharacterSource  #mesquite.charMatrices.CharSrcCoordIndep.CharSrcCoordIndep;
+					tell It;
+						getCharacterSource #mesquite.charMatrices.CharSrcCoordObed.CharSrcCoordObed;
+						tell It;
+							setCharacterSource #mesquite.charMatrices.StoredCharacters.StoredCharacters;
+							tell It;
+								setDataSet #380755927873853346;
+							endTell;
+						endTell;
+						setCharacter 1;
+					endTell;
+					setSelectedMode Selected_Species_are_Secure;
+				endTell;
+				doCalc;
+			endTell;
+			setValuesY  #mesquite.tuatara.ConservationPriority.ConservationPriority;
+			tell It;
+				setTreeSource  #mesquite.trees.TreeOfContext.TreeOfContext;
+				tell It;
+					setContextID 1159.1192319083537.8483751163309318970;
+				endTell;
+				setNumberTask  #mesquite.tuatara.ExpPhylContribution.ExpPhylContribution;
+				tell It;
+					toggleWeight on;
+					getCharacterSource  #mesquite.charMatrices.CharSrcCoordIndep.CharSrcCoordIndep;
+					tell It;
+						getCharacterSource #mesquite.charMatrices.CharSrcCoordObed.CharSrcCoordObed;
+						tell It;
+							setCharacterSource #mesquite.charMatrices.StoredCharacters.StoredCharacters;
+							tell It;
+								setDataSet #380755927873853346;
+							endTell;
+						endTell;
+						setCharacter 1;
+					endTell;
+					setSelectedMode Selected_Species_are_Secure;
+				endTell;
+				doCalc;
+			endTell;
+			showNamesToggle on;
+			getCharter #mesquite.charts.ItemsBiplot.ItemsBiplot;
+			tell It;
+				getWindow;
+				tell It;
+					setExplanationSize 30;
+					setAnnotationSize 20;
+					setFontIncAnnot 0;
+					setFontIncExp 0;
+					setSize 633 402;
+					setLocation 4 29;
+					setFont SanSerif;
+					setFontSize 10;
+					getToolPalette;
+					tell It;
+					endTell;
+					setActive;
+				endTell;
+				enableCalculations;
+				getEmployee #mesquite.charts.Scattergram.Scattergram;
+				tell It;
+					markerSize 10;
+					toggleJoin off;
+					toggleShowDots on;
+					movingWindowSize 1;
+					sumByBlocks off;
+				endTell;
+			endTell;
+			setChartVisible;
+			doCounts;
+			showWindow;
+		endTell;
+		endTell;
+end;
+
+

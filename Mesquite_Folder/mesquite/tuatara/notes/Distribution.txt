@@ -1,0 +1,15 @@
+Distribution is Tuatara.zip
+
+Structure:
+
+Tuatara
+	readMe.html
+	modules
+		tuatara
+	source
+		mesquite
+			tuatara
+
+
+Bundle example files on server into zip.
+
